@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  font-family: "BIZ UDゴシック","UD Shin Go NT Light JIS2004","UD デジタル 教科書体 N-R", Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "メイリオ", Meiryo, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ＭＳ Ｐゴシック", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+.chat-logs {
+  position:absolute;
+  left:500px;
+  top:0px;
+  bottom:100px;
+  width:400px;
+  border:1px solid black;
+}
+
+.inputArea {
+  width:500px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  bottom:100px;  
+  border:1px solid black;
+}
+
+.inputArea-nameSelector {
+  position:absolute;
+  left:0px;
+  top:0px;
+  bottom:0px;
+  width:200px;
+  border:1px solid black;
+}
+
+.inputArea-nameSelector-name {
+  border-bottom:1px solid black;
+}
+
+.inputArea-name {
+  position:absolute;
+  padding:8px;
+  left:200px;
+}
+
+.inputArea-content {
+  position:absolute;
+  top:24px;
+  left:200px;
+  padding: 8px;
+}
+
+.inputArea-content-input {
+  resize:none;
+  position:absolute;
+  width:280px;
+  height:400px;
+}
