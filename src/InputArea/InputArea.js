@@ -1,12 +1,21 @@
 import React from 'react';
 
 class NameSelector extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onSelectName = this.onSelectName.bind(this);
+    }
+    onSelectName(e) {
+        this.props.setName(e.target.innerText);
+    }
+
     render() {
         const list = this.props.nameList.map((name, i)=>{
             return (
                 <span
                     key={i}
                     className="inputArea-nameSelector-name"
+                    onClick={this.onSelectName}
                 >{name}</span>
             );
         });
@@ -32,19 +41,30 @@ class InputArea extends React.Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.editContent = this.editContent.bind(this);
         this.editName = this.editName.bind(this);
+        this.setName = this.setName.bind(this);
+    }
+
+    setName(name) {
+        this.setState({
+            name: name,
+            content: this.state.content,
+            nameList: this.state.nameList
+        });
     }
 
     editName(e) {
         this.setState({
             name: e.target.value,
-            content: this.state.content
+            content: this.state.content,
+            nameList: this.state.nameList
         });
     }
 
     editContent(e) {
         this.setState({
             name: this.state.name,
-            content: e.target.value
+            content: e.target.value,
+            nameList: this.state.nameList
         });
     }
 
@@ -60,9 +80,12 @@ class InputArea extends React.Component {
             name: this.state.name,
             content: this.state.content
         });
+        const names = this.state.nameList.slice();
+        names.unshift(this.state.name);
         this.setState({
             name: this.state.name,
-            content: ''
+            content: '',
+            nameList: [...new Set(names)]
         });
     }
 
@@ -72,6 +95,7 @@ class InputArea extends React.Component {
         >
             <NameSelector
                 nameList={this.state.nameList}
+                setName={this.setName}
             ></NameSelector>
             <div
                 className="inputArea-name"
@@ -83,11 +107,13 @@ class InputArea extends React.Component {
                     onChange={this.editName}
                 />
             </div>
+            <p
+                className="inputArea-explanation"
+            >Enter で送信 / Shift+Enter で改行</p>
             <div
                 className="inputArea-content"
             >
                 <textarea
-                    type="text"
                     className="inputArea-content-input"
                     value={this.state.content}
                     onKeyDown={this.sendMessage}

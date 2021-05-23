@@ -4,13 +4,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
+  background-color:white;
 }
 
 .chat-logs {
   position:absolute;
   left:500px;
   top:0px;
-  min-height:442px;
+  min-height:456px;
   bottom:100px;
   width:400px;
   border:1px solid black;
@@ -21,7 +22,7 @@ body {
   position:absolute;
   left:0px;
   top:0px;
-  min-height:442px;
+  min-height:456px;
   bottom:100px;  
   border:1px solid black;
 }
@@ -37,6 +38,11 @@ body {
 
 .inputArea-nameSelector-name {
   border-bottom:1px solid black;
+  display:block;
+}
+
+.inputArea-nameSelector-name:hover {
+  background-color:beige;
 }
 
 .inputArea-name {
@@ -45,9 +51,17 @@ body {
   left:200px;
 }
 
+.inputArea-explanation {
+  position:absolute;
+  left:200px;
+  top:24px;
+  padding-left:8px;
+  font-size:50%;
+}
+
 .inputArea-content {
   position:absolute;
-  top:24px;
+  top:36px;
   left:200px;
   padding: 8px;
 }
