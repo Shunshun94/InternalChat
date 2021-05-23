@@ -29,6 +29,41 @@ class InputArea extends React.Component {
             content: '',
             nameList: []
         };
+        this.sendMessage = this.sendMessage.bind(this);
+        this.editContent = this.editContent.bind(this);
+        this.editName = this.editName.bind(this);
+    }
+
+    editName(e) {
+        this.setState({
+            name: e.target.value,
+            content: this.state.content
+        });
+    }
+
+    editContent(e) {
+        this.setState({
+            name: this.state.name,
+            content: e.target.value
+        });
+    }
+
+    sendMessage(e) {
+        if(e.key !== 'Enter') {
+            return;
+        }
+        if(e.shiftKey) {
+            return;
+        }
+        e.preventDefault();
+        (this.props.getMessage || console.log)({
+            name: this.state.name,
+            content: this.state.content
+        });
+        this.setState({
+            name: this.state.name,
+            content: ''
+        });
     }
 
     render() {
@@ -45,6 +80,7 @@ class InputArea extends React.Component {
                     type="text"
                     className="inputArea-name-input"
                     value={this.state.name}
+                    onChange={this.editName}
                 />
             </div>
             <div
@@ -54,6 +90,8 @@ class InputArea extends React.Component {
                     type="text"
                     className="inputArea-content-input"
                     value={this.state.content}
+                    onKeyDown={this.sendMessage}
+                    onChange={this.editContent}
                 >
                 </textarea>
             </div>
