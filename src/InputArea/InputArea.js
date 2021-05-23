@@ -76,9 +76,14 @@ class InputArea extends React.Component {
             return;
         }
         e.preventDefault();
+        if(
+            ['', '[]', "''", '""', '「」'].includes(this.state.content.trim()) &&
+            (! Boolean(window.confirm('多分誤送信です。それでも送信しますか？')))) {
+            return;
+        }
         (this.props.getMessage || console.log)({
             name: this.state.name,
-            content: this.state.content
+            content: this.state.content.trim()
         });
         const names = this.state.nameList.slice();
         names.unshift(this.state.name);
