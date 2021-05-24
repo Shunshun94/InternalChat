@@ -28,10 +28,22 @@ class App extends React.Component {
   }
 
   catchMessage(message) {
-    console.log('catch', message, this.state.currentSystem);
+    this.loader.dynamicLoad(this.state.currentSystem).then((system)=>{
+      const diceResult = system.eval(message.content);
+      const logs = this.state.logs.slice();
+      const newText = diceResult ? `${message.content}\n${diceResult.text}` : message.content;
+      logs.push({
+        name: message.name,
+        content: newText
+      });
+      this.setState({
+        currentSystem: this.state.currentSystem,
+        logs: logs
+      });
+    });
   }
 
-  updateSystem(e) {
+  async updateSystem(e) {
     this.setState({
       logs: this.state.logs,
       currentSystem: e.target.value

@@ -15,6 +15,23 @@ body {
   bottom:100px;
   width:400px;
   border:1px solid black;
+  overflow: scroll;
+}
+
+.chat-logs-post {
+  padding: 4px;
+}
+
+.chat-logs-post:nth-child(even) {
+  background-color:azure;
+}
+
+.chat-logs-post-name {
+  font-weight: bold;
+}
+
+.chat-logs-post-content {
+  white-space:pre;
 }
 
 .inputArea {
