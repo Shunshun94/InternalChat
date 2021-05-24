@@ -10,7 +10,7 @@ body {
 .chat-logs {
   position:absolute;
   left:500px;
-  top:0px;
+  top:20px;
   min-height:456px;
   bottom:100px;
   width:400px;
@@ -21,7 +21,7 @@ body {
   width:500px;
   position:absolute;
   left:0px;
-  top:0px;
+  top:20px;
   min-height:456px;
   bottom:100px;  
   border:1px solid black;
@@ -71,4 +71,9 @@ body {
   position:absolute;
   width:280px;
   height:400px;
+}
+
+.systemList {
+  position:absolute;
+  top:0px;
 }
