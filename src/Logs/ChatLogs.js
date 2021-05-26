@@ -1,4 +1,5 @@
 import React from 'react';
+import CommonHtmlExporter from './export.js';
 
 class ChatLogPost extends React.Component {
     render() {
@@ -33,6 +34,7 @@ class ChatLogs extends React.Component {
             >
                 <button
                     className="chat-logs-save-button"
+                    onClick={(e)=>{CommonHtmlExporter.exec(this.props.logs)}}
                 >ログを保存する</button>
             </div>
             {display}
