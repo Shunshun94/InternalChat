@@ -9,9 +9,12 @@ class App extends React.Component {
     super(props);
     this.state = {
         logs: [],
-        currentSystem: 'DiceBot'
+        currentSystem: 'DiceBot',
+        memo: 'メモ帳:ログの発言をダブルクリックするとここに転記されるよ'
     };
     this.loader = new DynamicLoader();
+    this.updateMemo = this.updateMemo.bind(this);
+    this.onEditMemo = this.onEditMemo.bind(this);
     this.catchMessage = this.catchMessage.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
     this.systemList = this.loader.listAvailableGameSystems().sort((a,b)=>{
@@ -26,6 +29,21 @@ class App extends React.Component {
       );
     })
   }
+  onEditMemo(e) {
+    this.setState({
+      logs: this.state.logs,
+      currentSystem: this.state.currentSystem,
+      memo: e.target.value
+    });
+  }
+
+  updateMemo(message) {
+    this.setState({
+      logs: this.state.logs,
+      currentSystem: this.state.currentSystem,
+      memo: `${message.name}\n${message.content}\n----------\n${this.state.memo}`
+    });
+  }
 
   catchMessage(message) {
     this.loader.dynamicLoad(this.state.currentSystem).then((system)=>{
@@ -38,7 +56,8 @@ class App extends React.Component {
       });
       this.setState({
         currentSystem: this.state.currentSystem,
-        logs: logs
+        logs: logs,
+        memo: this.state.memo
       });
     });
   }
@@ -46,7 +65,8 @@ class App extends React.Component {
   async updateSystem(e) {
     this.setState({
       logs: this.state.logs,
-      currentSystem: e.target.value
+      currentSystem: e.target.value,
+      memo: this.state.memo
     });
   }
 
@@ -55,6 +75,7 @@ class App extends React.Component {
       <div className="App">
         <ChatLogs
           logs={this.state.logs}
+          onRequest={this.updateMemo}
         ></ChatLogs>
         <InputArea
           getMessage={this.catchMessage}
@@ -64,6 +85,11 @@ class App extends React.Component {
           className="systemList"
           value={this.state.currentSystem}
         >{this.systemList}</select>
+        <textarea
+          className="notepad"
+          value={this.state.memo}
+          onInput={this.onEditMemo}
+        ></textarea>
       </div>
     );
   }

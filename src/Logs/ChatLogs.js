@@ -6,6 +6,7 @@ class ChatLogPost extends React.Component {
         return (
             <div
                 className="chat-logs-post"
+                onDoubleClick={(e)=>{this.props.onRequest(this.props.log)}}
             >
                 <div
                     className="chat-logs-post-name"
@@ -24,6 +25,7 @@ class ChatLogs extends React.Component {
             return (<ChatLogPost
                 key={i}
                 log={log}
+                onRequest={this.props.onRequest}
             ></ChatLogPost>);
         })
         return (<div

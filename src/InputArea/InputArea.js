@@ -12,19 +12,20 @@ class NameSelector extends React.Component {
     render() {
         const list = this.props.nameList.map((name, i)=>{
             return (
-                <span
+                <option
                     key={i}
                     className="inputArea-nameSelector-name"
-                    onClick={this.onSelectName}
-                >{name}</span>
+                    value={name}
+                >{name}</option>
             );
         });
         return (
-            <div
+            <datalist
                 className="inputArea-nameSelector"
+                id="inputArea-nameSelector"
             >
                 {list}
-            </div>
+            </datalist>
         );
     }
 }
@@ -108,6 +109,7 @@ class InputArea extends React.Component {
                 発言者 <input
                     type="text"
                     className="inputArea-name-input"
+                    list="inputArea-nameSelector"
                     value={this.state.name}
                     onChange={this.editName}
                 />
