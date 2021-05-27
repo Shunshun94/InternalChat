@@ -88,6 +88,11 @@ class App extends React.Component {
           value={this.state.memo}
           onInput={this.onEditMemo}
         ></textarea>
+        <footer>
+          <p>BCDice が振れる1人用疑似チャット。サーバとかとの通信はないので模擬戦とかしたいけど何かの事情で情報を外に送りたくないときなどにどうぞ<br/>
+          出力結果は<a href="https://shunshun94.github.io/shared/jquery/io/github/shunshun94/trpg/logEditor/LogEditor.html" target="_blank" rel="noreferrer">こちらのエディタ</a>で編集できます</p>
+          <p><a href="https://github.com/Shunshun94/InternalChat" target="_blank" rel="noreferrer">リポジトリ</a> / <a href="https://twitter.com/Shunshun94" target="_blank" rel="noreferrer">作者連絡先（Twitter）</a> / <a href="https://amzn.asia/8mNqdKy" target="_blank" rel="noreferrer">作者欲しい物リスト</a></p>
+        </footer>
       </div>
     );
   }

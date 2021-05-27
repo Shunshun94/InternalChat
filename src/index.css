@@ -80,36 +80,15 @@ body {
   height:100%;
 }
 
-/*
-.inputArea-name {
-  position:absolute;
-  padding:8px;
-  left:200px;
-}
-
-.inputArea-explanation {
-  position:absolute;
-  left:200px;
-  top:24px;
-  padding-left:8px;
-  font-size:50%;
-}
-
-.inputArea-content {
-  position:absolute;
-  top:36px;
-  left:200px;
-  padding: 8px;
-}
-
-.inputArea-content-input {
-  resize:none;
-  position:absolute;
-  width:280px;
-  height:400px;
-}*/
-
 .systemList {
   position:absolute;
   top:0px;
+}
+
+footer {
+  position:absolute;
+  bottom:0px;
+  height:100px;
+  width:1200px;
+  padding:8px;
 }
