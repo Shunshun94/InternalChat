@@ -1,6 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { DynamicLoader, Version } from 'bcdice';
+import { DynamicLoader } from 'bcdice';
 import InputArea from './InputArea/InputArea.js';
 import ChatLogs from './Logs/ChatLogs.js';
 
@@ -18,8 +17,7 @@ class App extends React.Component {
     this.catchMessage = this.catchMessage.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
     this.systemList = this.loader.listAvailableGameSystems().sort((a,b)=>{
-      if(a.sortKey > b.sortKey) {return 1}
-      if(a.sortKey < b.sortKey) {return -1}
+      if(a.sortKey > b.sortKey) {return 1} else {return -1}
     }).map((sys, i)=>{
       return(
         <option

@@ -40,9 +40,12 @@ class InputArea extends React.Component {
             nameList: []
         };
         this.sendMessage = this.sendMessage.bind(this);
+        this.onPushTab = this.onPushTab.bind(this);
         this.editContent = this.editContent.bind(this);
         this.editName = this.editName.bind(this);
         this.setName = this.setName.bind(this);
+        this.nameRef = React.createRef();
+        this.contentRef = React.createRef();
     }
 
     setName(name) {
@@ -95,9 +98,23 @@ class InputArea extends React.Component {
         });
     }
 
+    onPushTab(e) {
+        if(e.key !== 'Tab') {
+            return;
+        }
+        e.preventDefault();
+        
+        if(e.target.className === 'inputArea-content-input') {
+            this.nameRef.current.focus()
+        } else {
+            this.contentRef.current.focus();
+        }
+    }
+
     render() {
         return(<div
             className="inputArea"
+            onKeyDown={this.onPushTab}
         >
             <NameSelector
                 nameList={this.state.nameList}
@@ -108,6 +125,7 @@ class InputArea extends React.Component {
             >
                 発言者 <input
                     type="text"
+                    ref={this.nameRef}
                     className="inputArea-name-input"
                     list="inputArea-nameSelector"
                     value={this.state.name}
@@ -121,6 +139,7 @@ class InputArea extends React.Component {
                 className="inputArea-content"
             >
                 <textarea
+                    ref={this.contentRef}
                     className="inputArea-content-input"
                     value={this.state.content}
                     onKeyDown={this.sendMessage}
