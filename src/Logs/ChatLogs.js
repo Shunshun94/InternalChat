@@ -21,7 +21,7 @@ class ChatLogPost extends React.Component {
 
 class ChatLogs extends React.Component {
     render() {
-        const display = this.props.logs.reverse().map((log, i)=>{
+        const display = this.props.logs.slice().reverse().map((log, i)=>{
             return (<ChatLogPost
                 key={i}
                 log={log}
