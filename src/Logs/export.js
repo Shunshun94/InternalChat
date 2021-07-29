@@ -19,8 +19,7 @@ CommonHtmlExporter.logToHtml = (log) => {
     name.innerText = log.name;
     base.appendChild(name);
     const content = document.createElement('span');
-    content.innerText = log.content;
-    content.innerHTML = content.innerText.replaceAll('\n', '<br/>');
+    content.innerHTML = log.content.replaceAll('\n', '<br/>');
     base.appendChild(content);
     return base.outerHTML;
 };
