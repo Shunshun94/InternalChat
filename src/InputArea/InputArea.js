@@ -43,6 +43,7 @@ class InputArea extends React.Component {
         this.onPushTab = this.onPushTab.bind(this);
         this.editContent = this.editContent.bind(this);
         this.editName = this.editName.bind(this);
+        this.onFocus = this.onFocus.bind(this);
         this.setName = this.setName.bind(this);
         this.nameRef = React.createRef();
         this.contentRef = React.createRef();
@@ -59,6 +60,14 @@ class InputArea extends React.Component {
     editName(e) {
         this.setState({
             name: e.target.value,
+            content: this.state.content,
+            nameList: this.state.nameList
+        });
+    }
+
+    onFocus(e) {
+        this.setState({
+            name: '',
             content: this.state.content,
             nameList: this.state.nameList
         });
@@ -130,6 +139,7 @@ class InputArea extends React.Component {
                     list="inputArea-nameSelector"
                     value={this.state.name}
                     onChange={this.editName}
+                    onFocus={this.onFocus}
                 />
             </div>
             <p
