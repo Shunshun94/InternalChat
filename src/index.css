@@ -13,20 +13,16 @@ body {
 .notepad {
   resize:none;
   position:absolute;
-  left:750px;
   top:20px;
   min-height:300px;
   bottom:100px;
-  width:450px;
 }
 
 .chat-logs {
   position:absolute;
-  left:250px;
   top:20px;
   min-height:300px;
   bottom:100px;
-  width:500px;
   border:1px solid black;
   overflow: scroll;
 }
@@ -44,13 +40,11 @@ body {
 }
 
 .chat-logs-post-content {
-  white-space:pre;
+  white-space:pre-wrap;
 }
 
 .inputArea {
-  width:250px;
   position:absolute;
-  left:0px;
   top:20px;
   min-height:300px;
   bottom:100px;
@@ -89,6 +83,7 @@ footer {
   position:absolute;
   bottom:0px;
   height:100px;
-  width:1200px;
+  width:100%;
   padding:8px;
+  font-size:50%;
 }

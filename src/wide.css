@@ -1,0 +1,123 @@
+.inputArea {
+    width:250px;
+}
+.chat-logs {
+    left:250px;
+    width:400px;
+}
+.notepad {
+    left:650px;
+    width:150px;
+}
+
+@media only screen and (min-width: 900px) {
+    .notepad {
+        width:250px;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .chat-logs {
+        width:500px;
+    }
+    .notepad {
+        left:750px;
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    .inputArea {
+        width:450px;
+    }
+    .chat-logs {
+        left:450px;
+    }
+    .notepad {
+        left:850px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .chat-logs {
+        width:550px;
+    }
+    .notepad {
+        left:950px;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .notepad {
+        width:350px;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .inputArea {
+        width:500px;
+    }
+    .chat-logs {
+        left:500px;
+    }
+    .notepad {
+        left:1050px;
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .inputArea {
+        width:550px;
+    }
+    .chat-logs {
+        left:550px;
+        width:600px;
+    }
+    .notepad {
+        left:1150px;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .notepad {
+        width:450px;
+    }
+}
+
+@media only screen and (min-width: 1700px) {
+    .inputArea {
+        width:600px;
+    }
+    .chat-logs {
+        left:600px;
+        width:650px;
+    }
+    .notepad {
+        left:1250px;
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    .inputArea {
+        width:650px;
+    }
+    .chat-logs {
+        left:650px;
+        width:700px;
+    }
+    .notepad {
+        left:1350px;
+    }
+}
+
+@media only screen and (min-width: 1900px) {
+    .inputArea {
+        width:700px;
+    }
+    .chat-logs {
+        left:700px;
+        width:750px;
+    }
+    .notepad {
+        left:1450px;
+    }
+}
