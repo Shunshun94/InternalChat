@@ -6,8 +6,9 @@ import ChatLogs from './Logs/ChatLogs.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const backup = JSON.parse(localStorage.getItem('log-backup') || '[]');
     this.state = {
-        logs: [],
+        logs: backup,
         currentSystem: 'DiceBot',
         memo: 'メモ帳:ログの発言をダブルクリックするとここに転記されるよ'
     };
@@ -16,6 +17,8 @@ class App extends React.Component {
     this.onEditMemo = this.onEditMemo.bind(this);
     this.catchMessage = this.catchMessage.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onReset = this.onReset.bind(this);
     this.systemList = this.loader.listAvailableGameSystems().sort((a,b)=>{
       if(a.sortKey > b.sortKey) {return 1} else {return -1}
     }).map((sys, i)=>{
@@ -27,6 +30,20 @@ class App extends React.Component {
       );
     })
   }
+  onSave() {
+    
+  }
+  onReset() {
+    if(window.confirm('ログをリセットしてよろしいですか？')) {
+      this.setState({
+        logs: [],
+        currentSystem: this.state.currentSystem,
+        memo: this.state.memo
+      });
+      localStorage.setItem('log-backup', '[]');
+    }
+  }
+
   onEditMemo(e) {
     this.setState({
       logs: this.state.logs,
@@ -57,6 +74,7 @@ class App extends React.Component {
         logs: logs,
         memo: this.state.memo
       });
+      localStorage.setItem('log-backup', JSON.stringify(logs));
     });
   }
 
@@ -71,9 +89,15 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+      <footer>
+        <p>BCDice が振れる1人用疑似チャット。サーバとかとの通信はないので模擬戦とかしたいけど何かの事情で情報を外に送りたくないときなどにどうぞ<br/>
+        出力結果は<a href="https://shunshun94.github.io/shared/jquery/io/github/shunshun94/trpg/logEditor/LogEditor.html" target="_blank" rel="noopener noreferrer">こちらのエディタ</a>で編集できます</p>
+        <p><a href="https://github.com/Shunshun94/InternalChat" target="_blank" rel="noopener noreferrer">リポジトリ</a> / <a href="https://twitter.com/Shunshun94" target="_blank" rel="noopener noreferrer">作者連絡先（Twitter）</a> / <a href="https://amzn.asia/8mNqdKy" target="_blank" rel="noopener noreferrer">作者欲しい物リスト</a></p>
+      </footer>
         <ChatLogs
           logs={this.state.logs}
           onRequest={this.updateMemo}
+          onSave={this.onSave}
         ></ChatLogs>
         <InputArea
           getMessage={this.catchMessage}
@@ -83,16 +107,14 @@ class App extends React.Component {
           className="systemList"
           value={this.state.currentSystem}
         >{this.systemList}</select>
+        <button
+          className="resetButton"
+          onClick={this.onReset}>ログをリセットする</button>
         <textarea
           className="notepad"
           value={this.state.memo}
           onInput={this.onEditMemo}
         ></textarea>
-        <footer>
-          <p>BCDice が振れる1人用疑似チャット。サーバとかとの通信はないので模擬戦とかしたいけど何かの事情で情報を外に送りたくないときなどにどうぞ<br/>
-          出力結果は<a href="https://shunshun94.github.io/shared/jquery/io/github/shunshun94/trpg/logEditor/LogEditor.html" target="_blank" rel="noopener noreferrer">こちらのエディタ</a>で編集できます</p>
-          <p><a href="https://github.com/Shunshun94/InternalChat" target="_blank" rel="noopener noreferrer">リポジトリ</a> / <a href="https://twitter.com/Shunshun94" target="_blank" rel="noopener noreferrer">作者連絡先（Twitter）</a> / <a href="https://amzn.asia/8mNqdKy" target="_blank" rel="noopener noreferrer">作者欲しい物リスト</a></p>
-        </footer>
       </div>
     );
   }

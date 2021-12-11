@@ -20,6 +20,19 @@ class ChatLogPost extends React.Component {
 }
 
 class ChatLogs extends React.Component {
+    constructor(props) {
+        super(props);
+        this.save = this.save.bind(this);
+    };
+
+    save(e) {
+        CommonHtmlExporter.exec(this.props.logs);
+        this.setState({
+            backup: []
+        });
+        (this.props.onSave || console.log)();
+    }
+
     render() {
         const display = this.props.logs.slice().reverse().map((log, i)=>{
             return (<ChatLogPost
@@ -27,7 +40,7 @@ class ChatLogs extends React.Component {
                 log={log}
                 onRequest={this.props.onRequest}
             ></ChatLogPost>);
-        })
+        });
         return (<div
             className="chat-logs"
         >
@@ -36,7 +49,7 @@ class ChatLogs extends React.Component {
             >
                 <button
                     className="chat-logs-save-button"
-                    onClick={(e)=>{CommonHtmlExporter.exec(this.props.logs)}}
+                    onClick={this.save}
                 >ログを保存する</button>
             </div>
             {display}

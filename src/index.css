@@ -79,6 +79,14 @@ body {
   top:0px;
 }
 
+.resetButton {
+  position:absolute;
+  top:0px;
+  left:304px;
+  height:19px;
+  font-size:0.6em;
+}
+
 footer {
   position:absolute;
   bottom:0px;
