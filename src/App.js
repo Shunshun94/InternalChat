@@ -6,10 +6,10 @@ import ChatLogs from './Logs/ChatLogs.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const backup = JSON.parse(localStorage.getItem('log-backup') || '[]');
+    const backup = JSON.parse(localStorage.getItem('internal-chat-log-backup') || '[]');
     this.state = {
         logs: backup,
-        currentSystem: 'DiceBot',
+        currentSystem: localStorage.getItem('internal-chat-currentSystem') || 'DiceBot',
         memo: 'メモ帳:ログの発言をダブルクリックするとここに転記されるよ'
     };
     this.loader = new DynamicLoader();
@@ -31,7 +31,7 @@ class App extends React.Component {
     })
   }
   onSave() {
-    localStorage.setItem('log-backup', '[]');
+    localStorage.setItem('internal-chat-log-backup', '[]');
   }
   onReset() {
     if(window.confirm('ログをリセットしてよろしいですか？')) {
@@ -40,7 +40,7 @@ class App extends React.Component {
         currentSystem: this.state.currentSystem,
         memo: this.state.memo
       });
-      localStorage.setItem('log-backup', '[]');
+      localStorage.setItem('internal-chat-log-backup', '[]');
     }
   }
 
@@ -74,7 +74,7 @@ class App extends React.Component {
         logs: logs,
         memo: this.state.memo
       });
-      localStorage.setItem('log-backup', JSON.stringify(logs));
+      localStorage.setItem('internal-chat-log-backup', JSON.stringify(logs));
     });
   }
 
@@ -84,6 +84,7 @@ class App extends React.Component {
       currentSystem: e.target.value,
       memo: this.state.memo
     });
+    localStorage.setItem('internal-chat-currentSystem', e.target.value);
   }
 
   render() {
