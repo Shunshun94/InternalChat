@@ -31,7 +31,7 @@ class App extends React.Component {
     })
   }
   onSave() {
-    
+    localStorage.setItem('log-backup', '[]');
   }
   onReset() {
     if(window.confirm('ログをリセットしてよろしいですか？')) {
