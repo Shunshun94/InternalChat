@@ -157,6 +157,13 @@ class InputArea extends React.Component {
                 >
                 </textarea>
             </div>
+            <div
+                className="inputArea-import"
+            >
+                <button
+
+                >クリップボードからキャラクターシートをインポート</button>
+            </div>
         </div>);
     }
 }
