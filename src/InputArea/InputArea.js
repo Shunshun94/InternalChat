@@ -49,6 +49,7 @@ class InputArea extends React.Component {
         this.importFromClipboard = this.importFromClipboard.bind(this);
         this.nameRef = React.createRef();
         this.contentRef = React.createRef();
+        this.smallchatRef = React.createRef();
     }
 
     setName(name) {
@@ -120,10 +121,12 @@ class InputArea extends React.Component {
         }
         e.preventDefault();
         
-        if(e.target.className === 'inputArea-content-input') {
-            this.nameRef.current.focus()
-        } else {
+        if(e.target.className === 'inputArea-name-input') {
             this.contentRef.current.focus();
+        } else if(e.target.className === 'inputArea-content-input') {
+            this.smallchatRef.current.focus();
+        } else {
+            this.nameRef.current.focus()            
         }
     }
 
@@ -178,6 +181,12 @@ class InputArea extends React.Component {
                     onChange={this.editContent}
                 >
                 </textarea>
+                <input
+                    type="text"
+                    ref={this.smallchatRef}
+                    className="inputArea-smallchat-input"
+                    value={this.smallchat}
+                />
             </div>
             <div
                 className="inputArea-import"
