@@ -37,6 +37,7 @@ class InputArea extends React.Component {
         this.state = {
             name: '',
             content: '',
+            smallchat: '',
             nameList: []
         };
         this.sendMessage = this.sendMessage.bind(this);
@@ -54,6 +55,7 @@ class InputArea extends React.Component {
         this.setState({
             name: name,
             content: this.state.content,
+            smallchat: this.state.smallchat,
             nameList: this.state.nameList
         });
     }
@@ -62,6 +64,7 @@ class InputArea extends React.Component {
         this.setState({
             name: e.target.value,
             content: this.state.content,
+            smallchat: this.state.smallchat,
             nameList: this.state.nameList
         });
     }
@@ -70,6 +73,7 @@ class InputArea extends React.Component {
         this.setState({
             name: '',
             content: this.state.content,
+            smallchat: this.state.smallchat,
             nameList: this.state.nameList
         });
     }
@@ -78,6 +82,7 @@ class InputArea extends React.Component {
         this.setState({
             name: this.state.name,
             content: e.target.value,
+            smallchat: this.state.smallchat,
             nameList: this.state.nameList
         });
     }
@@ -104,6 +109,7 @@ class InputArea extends React.Component {
         this.setState({
             name: this.state.name,
             content: '',
+            smallchat: this.state.smallchat,
             nameList: [...new Set(names)]
         });
     }
@@ -123,7 +129,6 @@ class InputArea extends React.Component {
 
     importFromClipboard(e) {
         navigator.clipboard.readText().then((text)=>{
-            console.log(self, this);
             const json = JSON.parse(text);
             const name = json.data.name;
             const names = this.state.nameList.slice();
@@ -131,6 +136,7 @@ class InputArea extends React.Component {
             this.setState({
                 name: this.state.name,
                 content: this.state.content,
+                smallchat: this.state.smallchat,
                 nameList: [...new Set(names)]
             });
         });
@@ -178,7 +184,8 @@ class InputArea extends React.Component {
             >
                 <button
                     onClick={this.importFromClipboard}
-                >クリップボードからキャラクターシートをインポート</button>
+                    title="クリップボードからココフォリアの Clipborad API 形式の情報をインポートします"
+                >クリップボードからインポート</button>
             </div>
         </div>);
     }
