@@ -45,6 +45,7 @@ class InputArea extends React.Component {
         this.editName = this.editName.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.setName = this.setName.bind(this);
+        this.importFromClipboard = this.importFromClipboard.bind(this);
         this.nameRef = React.createRef();
         this.contentRef = React.createRef();
     }
@@ -120,6 +121,21 @@ class InputArea extends React.Component {
         }
     }
 
+    importFromClipboard(e) {
+        navigator.clipboard.readText().then((text)=>{
+            console.log(self, this);
+            const json = JSON.parse(text);
+            const name = json.data.name;
+            const names = this.state.nameList.slice();
+            names.unshift(name);
+            this.setState({
+                name: this.state.name,
+                content: this.state.content,
+                nameList: [...new Set(names)]
+            });
+        });
+    }
+
     render() {
         return(<div
             className="inputArea"
@@ -161,7 +177,7 @@ class InputArea extends React.Component {
                 className="inputArea-import"
             >
                 <button
-
+                    onClick={this.importFromClipboard}
                 >クリップボードからキャラクターシートをインポート</button>
             </div>
         </div>);
