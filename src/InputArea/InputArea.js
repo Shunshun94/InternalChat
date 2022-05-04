@@ -29,6 +29,32 @@ class NameSelector extends React.Component {
         );
     }
 }
+// 
+class CommandSelector extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const list = this.props.commandList.map((command, i)=>{
+            return (
+                <option
+                    key={i}
+                    className="inputArea-nameSelector-name"
+                    value={command.label}
+                >{command.value}</option>
+            );
+        });
+        return (
+            <datalist
+                className="inputArea-commandSelector"
+                id="inputArea-commandSelector"
+            >
+                {list}
+            </datalist>
+        );
+    }
+}
 
 
 class InputArea extends React.Component {
@@ -38,7 +64,9 @@ class InputArea extends React.Component {
             name: '',
             content: '',
             smallchat: '',
-            nameList: []
+            nameList: [],
+            characters: {},
+            commandSuggestion: []
         };
         this.sendMessage = this.sendMessage.bind(this);
         this.onPushTab = this.onPushTab.bind(this);
@@ -47,9 +75,23 @@ class InputArea extends React.Component {
         this.onFocus = this.onFocus.bind(this);
         this.setName = this.setName.bind(this);
         this.importFromClipboard = this.importFromClipboard.bind(this);
+        this.getCommandSuggestion = this.getCommandSuggestion.bind(this);
         this.nameRef = React.createRef();
         this.contentRef = React.createRef();
         this.smallchatRef = React.createRef();
+    }
+
+    getCommandSuggestion(name) {
+        const map = this.state.characters[name];
+        if(map) {
+            const resources = [];
+            for(var label in map.status) {
+                resources.push({label: `:${label}`, value: map.status[label]});
+            }
+            return map.commands.map((l)=>{return {label: l, value: ''}}).concat(resources);
+        } else {
+            return [];
+        }
     }
 
     setName(name) {
@@ -57,7 +99,9 @@ class InputArea extends React.Component {
             name: name,
             content: this.state.content,
             smallchat: this.state.smallchat,
-            nameList: this.state.nameList
+            nameList: this.state.nameList,
+            characters: this.state.characters,
+            commandSuggestion: this.getCommandSuggestion(name)
         });
     }
 
@@ -66,7 +110,9 @@ class InputArea extends React.Component {
             name: e.target.value,
             content: this.state.content,
             smallchat: this.state.smallchat,
-            nameList: this.state.nameList
+            nameList: this.state.nameList,
+            characters: this.state.characters,
+            commandSuggestion: this.getCommandSuggestion(e.target.value)
         });
     }
 
@@ -75,7 +121,9 @@ class InputArea extends React.Component {
             name: '',
             content: this.state.content,
             smallchat: this.state.smallchat,
-            nameList: this.state.nameList
+            nameList: this.state.nameList,
+            characters: this.state.characters,
+            commandSuggestion: []
         });
     }
 
@@ -84,7 +132,9 @@ class InputArea extends React.Component {
             name: this.state.name,
             content: e.target.value,
             smallchat: this.state.smallchat,
-            nameList: this.state.nameList
+            nameList: this.state.nameList,
+            characters: this.state.characters,
+            commandSuggestion: this.state.commandSuggestion
         });
     }
 
@@ -111,7 +161,9 @@ class InputArea extends React.Component {
             name: this.state.name,
             content: '',
             smallchat: this.state.smallchat,
-            nameList: [...new Set(names)]
+            nameList: [...new Set(names)],
+            characters: this.state.characters,
+            commandSuggestion: this.state.commandSuggestion
         });
     }
 
@@ -120,7 +172,7 @@ class InputArea extends React.Component {
             return;
         }
         e.preventDefault();
-        
+
         if(e.target.className === 'inputArea-name-input') {
             this.contentRef.current.focus();
         } else if(e.target.className === 'inputArea-content-input') {
@@ -132,15 +184,41 @@ class InputArea extends React.Component {
 
     importFromClipboard(e) {
         navigator.clipboard.readText().then((text)=>{
-            const json = JSON.parse(text);
-            const name = json.data.name;
+            const commandsRegExp = /\/\/\s*(.+)\s*=(.+)$/;
+            const json = JSON.parse(text).data;
+            const name = json.name;
             const names = this.state.nameList.slice();
+
+            const characters = JSON.parse(JSON.stringify(this.state.characters));
+            characters[name] = {};
+            characters[name].status = {};
+            characters[name].commands = [];
+            json.status.forEach((d)=>{
+                characters[name].status[d.label] = d.value;
+            });
+            json.params.forEach((d)=>{
+                characters[name].status[d.label] = d.value;
+            });
+            json.commands.split('\n').forEach((t)=>{
+                const l = t.trim();
+                if(l === '') {return;}
+                if(l.startsWith('//') && commandsRegExp.test(l)) {
+                    const execResult = commandsRegExp.exec(l);
+                    characters[name].status[execResult[1]] = execResult[2];
+                } else {
+                    characters[name].commands.push(l);
+                }
+            });
+            characters[name].status['イニシアティブ'] = String(json.initiative);
+
             names.unshift(name);
             this.setState({
                 name: this.state.name,
                 content: this.state.content,
                 smallchat: this.state.smallchat,
-                nameList: [...new Set(names)]
+                nameList: [...new Set(names)],
+                characters: characters,
+                commandSuggestion: this.state.commandSuggestion
             });
         });
     }
@@ -185,8 +263,12 @@ class InputArea extends React.Component {
                     type="text"
                     ref={this.smallchatRef}
                     className="inputArea-smallchat-input"
+                    list="inputArea-commandSelector"
                     value={this.smallchat}
                 />
+                <CommandSelector
+                    commandList={this.state.commandSuggestion}
+                ></CommandSelector>
             </div>
             <div
                 className="inputArea-import"
