@@ -1,4 +1,5 @@
 import React from 'react';
+import CharacterHandler from './characterHandler.js';
 
 class NameSelector extends React.Component {
     constructor(props) {
@@ -69,8 +70,10 @@ class InputArea extends React.Component {
             commandSuggestion: []
         };
         this.sendMessage = this.sendMessage.bind(this);
+        this.sendSmallMessage = this.sendSmallMessage.bind(this);
         this.onPushTab = this.onPushTab.bind(this);
         this.editContent = this.editContent.bind(this);
+        this.editSmallChat = this.editSmallChat.bind(this);
         this.editName = this.editName.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.setName = this.setName.bind(this);
@@ -126,7 +129,16 @@ class InputArea extends React.Component {
             commandSuggestion: []
         });
     }
-
+    editSmallChat(e) {
+        this.setState({
+            name: this.state.name,
+            content: this.state.content,
+            smallchat: e.target.value,
+            nameList: this.state.nameList,
+            characters: this.state.characters,
+            commandSuggestion: this.state.commandSuggestion
+        });
+    }
     editContent(e) {
         this.setState({
             name: this.state.name,
@@ -134,6 +146,35 @@ class InputArea extends React.Component {
             smallchat: this.state.smallchat,
             nameList: this.state.nameList,
             characters: this.state.characters,
+            commandSuggestion: this.state.commandSuggestion
+        });
+    }
+
+    sendSmallMessage(e) {
+        if(e.key !== 'Enter') {
+            return;
+        }
+        e.preventDefault();
+        if(
+            ['', '[]', "''", '""', '「」'].includes(this.state.smallchat.trim()) &&
+            (! Boolean(window.confirm('多分誤送信です。それでも送信しますか？')))) {
+            return;
+        }
+        const modifyResult = CharacterHandler.handleTextMessage(this.state.smallchat, this.state.characters[this.state.name]);
+        const characters = JSON.parse(JSON.stringify(this.state.characters));
+        characters[this.state.name] = JSON.parse(JSON.stringify(modifyResult.character));
+        (this.props.getMessage || console.log)({
+            name: this.state.name,
+            content: modifyResult.text
+        });
+        const names = this.state.nameList.slice();
+        names.unshift(this.state.name);
+        this.setState({
+            name: this.state.name,
+            content: this.state.content,
+            smallchat: '',
+            nameList: [...new Set(names)],
+            characters: characters,
             commandSuggestion: this.state.commandSuggestion
         });
     }
@@ -184,32 +225,12 @@ class InputArea extends React.Component {
 
     importFromClipboard(e) {
         navigator.clipboard.readText().then((text)=>{
-            const commandsRegExp = /\/\/\s*(.+)\s*=(.+)$/;
             const json = JSON.parse(text).data;
             const name = json.name;
             const names = this.state.nameList.slice();
 
             const characters = JSON.parse(JSON.stringify(this.state.characters));
-            characters[name] = {};
-            characters[name].status = {};
-            characters[name].commands = [];
-            json.status.forEach((d)=>{
-                characters[name].status[d.label] = d.value;
-            });
-            json.params.forEach((d)=>{
-                characters[name].status[d.label] = d.value;
-            });
-            json.commands.split('\n').forEach((t)=>{
-                const l = t.trim();
-                if(l === '') {return;}
-                if(l.startsWith('//') && commandsRegExp.test(l)) {
-                    const execResult = commandsRegExp.exec(l);
-                    characters[name].status[execResult[1]] = execResult[2];
-                } else {
-                    characters[name].commands.push(l);
-                }
-            });
-            characters[name].status['イニシアティブ'] = String(json.initiative);
+            characters[name] = CharacterHandler.jsonToCharacterData(json);
 
             names.unshift(name);
             this.setState({
@@ -264,7 +285,9 @@ class InputArea extends React.Component {
                     ref={this.smallchatRef}
                     className="inputArea-smallchat-input"
                     list="inputArea-commandSelector"
-                    value={this.smallchat}
+                    value={this.state.smallchat}
+                    onKeyDown={this.sendSmallMessage}
+                    onChange={this.editSmallChat}
                 />
                 <CommandSelector
                     commandList={this.state.commandSuggestion}
